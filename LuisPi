@@ -16,7 +16,7 @@ def image_transformation(newImage, new_size=(105, 80)): #Revise size of image (1
 env = gym.make("MsPacman-v0")
 
 model = keras.Sequential([
-    tf.keras.layers.Reshape(target_shape=(210 * 160,), input_shape=(105, 80)),
+    tf.keras.layers.Reshape(target_shape=(210 * 160), input_shape=(105, 80)),
     tf.keras.layers.Dense(units=256, activation='relu'),#Units is the number of networks/layer
     tf.keras.layers.Dense(units=192, activation='relu'),
     tf.keras.layers.Dense(units=128, activation='relu'),

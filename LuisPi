@@ -1,0 +1,44 @@
+import time
+import gym
+import tensorflow as tf
+from tensorflow import keras #We will use Keras to create the neural network
+from tensorflow.keras import datasets, layers, models, initializers #Option 2 below
+
+#Input transformation (preImageSize -> (210,160,3))
+def image_transformation(newImage, new_size=(105, 80)): #Revise size of image (105,80,1)
+
+    newImage = tf.newImage.rgb_to_grayscale(newImage) #We have to convert to grayscale the image
+    newImage = tf.newImage.resize(newImage, new_size)
+    newImage = newImage / 255 #Normalize newImage
+    return newImage
+
+
+env = gym.make("MsPacman-v0")
+
+model = keras.Sequential([
+    tf.keras.layers.Reshape(target_shape=(210 * 160,), input_shape=(105, 80)),
+    tf.keras.layers.Dense(units=256, activation='relu'),#Units is the number of networks/layer
+    tf.keras.layers.Dense(units=192, activation='relu'),
+    tf.keras.layers.Dense(units=128, activation='relu'),
+    tf.keras.layers.Dense(units=10, activation='softmax')
+])
+
+#Other option
+model = models.Sequential()
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(105, 80, 1)))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+
+model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(10))
+
+model.compile(optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+
+
+
+

@@ -15,17 +15,13 @@ def image_transformation(newImage, new_size=(105, 80)): #Revise size of image (1
 
 env = gym.make("MsPacman-v0")
 
-model = keras.Sequential([
-    tf.keras.layers.Reshape(target_shape=(210 * 160), input_shape=(105, 80)),
-    tf.keras.layers.Dense(units=256, activation='relu'),#Units is the number of networks/layer
-    tf.keras.layers.Dense(units=192, activation='relu'),
-    tf.keras.layers.Dense(units=128, activation='relu'),
-    tf.keras.layers.Dense(units=10, activation='softmax')
-])
-
-#Other option
+def nnCreation()
 model = models.Sequential()
 model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(105, 80, 1)))
+#32 are filters
+#(3,3) is kernel size
+#Same means that the input is padded with '0' (convolution input and output have the same size)
+#relu = rectifive linear 
 model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
@@ -33,11 +29,20 @@ model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 
 model.add(layers.Flatten())
 model.add(layers.Dense(64, activation='relu'))
-model.add(layers.Dense(10))
+model.add(layers.Dense(1, activation='sigmoid'))
+return model
 
+#--------------------------------------------------------------------------------------------------------------
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
+
+
+init = tf.global_variables_initializer()
+with tf.Session() as sess:
+init.run()
+
+
 
 
 
